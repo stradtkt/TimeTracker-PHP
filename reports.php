@@ -5,12 +5,29 @@ $page = "reports";
 $pageTitle = "Reports | Time Tracker";
 $filter = 'all';
 
+if(!empty($_GET["filter"])) {
+    $filter = explode(":", filter_input(INPUT_GET, 'filter', FILTER_SANITIZE_STRING));
+}
+
 include 'inc/header.php';
 ?>
 <div class="col-container page-container">
     <div class="col col-70-md col-60-lg col-center">
         <div class="col-container">
             <h1 class='actions-header'>Reports</h1>
+            <form class="form-container form-report" action="reports.php" method="get">
+                <label for="filter">Filter:</label>
+                <select name="filter" id="filter">
+                    <option value="">Select One</option>
+                    <?php
+                    foreach (get_project_list() as $item) {
+                        echo '<option value="project:' . $item["project_id"] . '">';
+                        echo $item["title"] . "</option>\n";
+                    }
+                    ?>
+                </select>
+                <input type="submit" class="button" value="Run">
+            </form>
         </div>
         <div class="section page">
             <div class="wrapper">

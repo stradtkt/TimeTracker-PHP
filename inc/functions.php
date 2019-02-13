@@ -31,11 +31,20 @@ function get_task_list($filter = null) {
     include('connection.php');
     $sql = "SELECT tasks.*, projects.title as project FROM tasks JOIN projects ON tasks.project_id = projects.project_id";
     $order_by = " ORDER BY date DESC";
+    $where = "";
+    if(is_array($filter)) {
+        if($filter[0] == "project") {
+            $where = " WHERE projects.project_id = ?";
+        }
+    }
     if($filter) {
         $order_by = " ORDER BY projects.title ASC, date DESC";
     }
     try {
-        $results = $db->prepare($sql . $order_by);
+        $results = $db->prepare($sql . $where . $order_by);
+        if(is_array($filter)) {
+            $results->bindValue(1, $filter[1], PDO::PARAM_INT);
+        }
         $results->execute();
     } catch(Exception $e) {
         echo "Error: " .$e->getMessage() . "<br/>";
