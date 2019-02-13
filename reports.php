@@ -14,9 +14,22 @@ include 'inc/header.php';
         <div class="section page">
             <div class="wrapper">
                 <table>
+                    <?php
+
+                    $total = 0;
+                    foreach (get_task_list() as $item) {
+                        $total += $item["time"];
+                        echo "<tr>\n";
+                        echo "<td>" . $item["title"] . "</td>";
+                        echo "<td>" . $item["date"] . "</td>";
+                        echo "<td>" . $item["time"] . "</td>";
+                        echo "</tr>\n";
+                    }
+
+                    ?>
                     <tr>
                         <th class='grand-total-label' colspan='2'>Grand Total</th>
-                        <th class='grand-total-number'>0</th>
+                        <th class='grand-total-number'><?php echo $total; ?></th>
                     </tr>
                 </table>
             </div>
