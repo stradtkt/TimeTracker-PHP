@@ -3,6 +3,7 @@ require 'inc/functions.php';
 
 $page = "reports";
 $pageTitle = "Reports | Time Tracker";
+$filter = 'all';
 
 include 'inc/header.php';
 ?>
@@ -16,14 +17,33 @@ include 'inc/header.php';
                 <table>
                     <?php
 
-                    $total = 0;
-                    foreach (get_task_list() as $item) {
+                    $total = $project_id = $project_total = 0;
+                    $tasks = get_task_list($filter);
+                    foreach ($tasks as $item) {
+                        if($project_id != $item["project_id"]) {
+                            $project_id = $item["project_id"];
+                            echo "<thead>\n";
+                            echo "<tr>\n";
+                            echo "<th>". $item["project"] ."</th>";
+                            echo "<th>Date</th>";
+                            echo "<th>Time</th>";
+                            echo "</tr>\n";
+                            echo "</thead>\n";
+                        }
+                        $project_total += $item["time"];
                         $total += $item["time"];
                         echo "<tr>\n";
                         echo "<td>" . $item["title"] . "</td>";
                         echo "<td>" . $item["date"] . "</td>";
                         echo "<td>" . $item["time"] . "</td>";
                         echo "</tr>\n";
+                        if(next($tasks)["project_id"] != $item["project_id"]) {
+                            echo "<tr>\n";
+                            echo "<th class='project-total-label' colspan='2'>Project Total</th>";
+                            echo "<th class='project-total-number'>$project_total</th>\n";
+                            echo "</tr>\n";
+                            $project_total = 0;
+                        }
                     }
 
                     ?>
