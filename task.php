@@ -30,8 +30,8 @@ include 'inc/header.php';
         <div class="col col-70-md col-60-lg col-center">
             <h1 class="actions-header">Add Task</h1>
             <?php
-            foreach(get_task_list() as $item) {
-                echo "<li>" . $item["title"] . "</li>";
+            if(isset($error_message)) {
+                echo "<p class='message'>$error_message</p>";
             }
             ?>
             <form class="form-container form-add" method="post" action="task.php">
