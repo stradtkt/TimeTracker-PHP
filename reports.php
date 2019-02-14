@@ -19,12 +19,19 @@ include 'inc/header.php';
                 <label for="filter">Filter:</label>
                 <select name="filter" id="filter">
                     <option value="">Select One</option>
+                    <optgroup label="Project">
                     <?php
                     foreach (get_project_list() as $item) {
                         echo '<option value="project:' . $item["project_id"] . '">';
                         echo $item["title"] . "</option>\n";
                     }
                     ?>
+                    </optgroup>
+                    <optgroup label="Category">
+                        <option value="category:Billable">Billable</option>
+                        <option value="category:Personal">Personal</option>
+                        <option value="category:Charity">Charity</option>
+                    </optgroup>
                 </select>
                 <input type="submit" class="button" value="Run">
             </form>
