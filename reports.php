@@ -14,7 +14,25 @@ include 'inc/header.php';
 <div class="col-container page-container">
     <div class="col col-70-md col-60-lg col-center">
         <div class="col-container">
-            <h1 class='actions-header'>Reports</h1>
+            <h1 class='actions-header'>Reports on <?php
+                if(!is_array($filter)) {
+                    echo "All Tasks By Project";
+                } else {
+                    echo ucwords($filter[0]) . " : ";
+                    switch($filter[0]) {
+                        case 'project':
+                            $project = get_project($filter[1]);
+                            echo $project['title'];
+                            break;
+                        case 'category':
+                            echo $filter[1];
+                            break;
+                        case 'date':
+                            echo $filter[1] . " - " . $filter[2];
+                            break;
+                    }
+                }
+                ?></h1>
             <form class="form-container form-report" action="reports.php" method="get">
                 <label for="filter">Filter:</label>
                 <select name="filter" id="filter">
